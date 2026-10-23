@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="VexoraWP — Passive WordPress Reconnaissance, Threat Intelligence, and Security Posture Audit Suite.">
+  <title>VexoraWP — WordPress Security Audit & Recon Suite</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="cyber-background"></div>
+  <div class="cyber-grid"></div>
+
+  <div class="app-layout">
+    <!-- TOP NAVIGATION -->
+    <header class="navbar">
+      <div class="navbar-brand">
+        <div class="brand-shield">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            <path d="m9 12 2 2 4-4"></path>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">VEXORA<span class="accent-text">WP</span></span>
+          <span class="brand-tag">SECURITY RECON SUITE</span>
+        </div>
+      </div>
+
+      <div class="navbar-actions">
+        <div class="status-indicator">
+          <span class="pulse-dot"></span>
+          <span class="status-label">ENGINE READY</span>
+        </div>
+        <button id="btn-toggle-history" class="btn-ghost" title="Toggle Scan History">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          <span>History</span>
+          <span id="history-counter" class="badge-count">0</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-container">
+      <!-- HERO SCANNER FORM -->
+      <section class="hero-section" id="hero-section">
+        <div class="hero-badge">PASSIVE THREAT RECONNAISSANCE</div>
+        <h1 class="hero-title">Audit WordPress Security & Architecture in Seconds</h1>
+        <p class="hero-subtitle">
+          Fingerprint servers, detect vulnerable plugins, inspect exposed files, and score security posture with zero intrusion.
+        </p>
+
+        <form id="scan-form" class="scan-card">
+          <div class="input-wrapper">
+            <div class="input-icon">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+              </svg>
+            </div>
+            <input 
+              type="text" 
+              id="target-url-input" 
+              class="url-input" 
+              placeholder="https://example.com" 
+              required 
+              autocomplete="off" 
+              spellcheck="false"
+            />
+            <button type="submit" id="btn-start-scan" class="btn-primary">
+              <span class="btn-text">ANALYZE SITE</span>
+              <svg class="btn-arrow" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </button>
+          </div>
+
+          <div class="scan-options-row">
+            <div class="mode-toggles">
+              <label class="mode-radio">
+                <input type="radio" name="scan-mode" value="quick" checked />
+                <span class="radio-box">
+                  <span class="radio-title">⚡ Fast Recon</span>
+                  <span class="radio-desc">~4s • Fingerprint, Headers & Exposures</span>
+                </span>
+              </label>
+
+              <label class="mode-radio">
+                <input type="radio" name="scan-mode" value="full" />
+                <span class="radio-box">
+                  <span class="radio-title">🛡 Deep Audit</span>
+                  <span class="radio-desc">~12s • Full 100+ Plugin & User Probing</span>
+                </span>
+              </label>
+            </div>
+
+            <div class="sample-targets">
+              <span class="sample-label">Try sample:</span>
+              <button type="button" class="sample-btn" data-url="https://wordpress.org">wordpress.org</button>
+              <button type="button" class="sample-btn" data-url="https://woocommerce.com">woocommerce.com</button>
+            </div>
+          </div>
+        </form>
+      </section>
+
+      <!-- LIVE SCAN PROGRESS HUD -->
+      <section id="scan-progress-hud" class="progress-hud hidden">
+        <div class="hud-box">
+          <div class="hud-header">
+            <div class="hud-spinner"></div>
+            <div>
+              <h3 id="hud-status-title" class="hud-title">Initializing Passive Reconnaissance...</h3>
+              <p id="hud-status-subtitle" class="hud-subtitle">Establishing connection to target endpoint</p>
+            </div>
+          </div>
+
+          <div class="hud-bar-container">
+            <div id="hud-progress-bar" class="hud-bar"></div>
+          </div>
+
+          <div class="hud-steps-list">
+            <div class="hud-step active" id="step-1">
+              <div class="step-indicator"></div>
+              <span>Target & WordPress Detection</span>
+            </div>
+            <div class="hud-step" id="step-2">
+              <div class="step-indicator"></div>
+              <span>Server & WAF Fingerprinting</span>
+            </div>
+            <div class="hud-step" id="step-3">
+              <div class="step-indicator"></div>
+              <span>User & Author IDOR Harvesting</span>
+            </div>
+            <div class="hud-step" id="step-4">
+              <div class="step-indicator"></div>
+              <span>Multi-Threaded Plugin Probing</span>
+            </div>
+            <div class="hud-step" id="step-5">
+              <div class="step-indicator"></div>
+              <span>Sensitive File & Exposure Audit</span>
+            </div>
+            <div class="hud-step" id="step-6">
+              <div class="step-indicator"></div>
+              <span>Correlating CVE Intelligence & Scoring</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ERROR ALERT BANNER -->
+      <div id="error-alert" class="alert-box alert-error hidden">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <div class="alert-content">
+          <h4 id="error-title">Audit Failed</h4>
+          <p id="error-message">Unable to inspect target.</p>
+        </div>
+        <button id="btn-close-error" class="alert-close">&times;</button>
+      </div>
+
+      <!-- RESULTS DASHBOARD -->
+      <section id="results-dashboard" class="dashboard-section hidden">
+        <!-- AUDIT SUMMARY HEADER BAR -->
+        <div class="dashboard-topbar">
+          <div class="topbar-info">
+            <span class="target-title" id="res-target-url">https://example.com</span>
+            <div class="meta-row">
+              <span id="res-scan-time" class="meta-pill">Audited: Just now</span>
+              <span id="res-scan-mode" class="meta-pill">Mode: Full Audit</span>
+              <span id="res-wp-version-badge" class="meta-pill highlight">WordPress Confirmed</span>
+            </div>
+          </div>
+
+          <div class="topbar-actions">
+            <button id="btn-export-html" class="btn-action btn-export-html">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              <span>Export HTML Report</span>
+            </button>
+            <button id="btn-export-json" class="btn-action">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="16 18 22 12 16 6"></polyline>
+                <polyline points="8 6 2 12 8 18"></polyline>
+              </svg>
+              <span>JSON Data</span>
+            </button>
+            <button id="btn-new-scan" class="btn-action btn-secondary">
+              <span>+ New Scan</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- EXECUTIVE SCORECARD & KPI HERO -->
+        <div class="hero-scorecard-grid">
+          <!-- SCORE GAUGE CARD -->
+          <div class="score-card">
+            <div class="gauge-wrapper">
+              <svg class="score-gauge-svg" viewBox="0 0 140 140">
+                <circle class="gauge-bg" cx="70" cy="70" r="58"></circle>
+                <circle id="gauge-fill" class="gauge-progress" cx="70" cy="70" r="58"></circle>
+              </svg>
+              <div class="gauge-center-content">
+                <span id="score-number" class="score-val">100</span>
+                <span class="score-denom">/ 100</span>
+              </div>
+            </div>
+
+            <div class="score-meta">
+              <div class="grade-badge-container">
+                <span id="grade-badge" class="grade-badge grade-a">GRADE A</span>
+              </div>
+              <h3 id="rating-title" class="rating-title">Hardened Posture</h3>
+              <p id="rating-description" class="rating-desc">Target demonstrates strong baseline configuration.</p>
+            </div>
+          </div>
+
+          <!-- KPI STAT METRICS (4 CARDS) -->
+          <div class="kpi-quad-grid">
+            <div class="kpi-mini-card">
+              <div class="kpi-icon-wrap icon-red">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+                  <line x1="12" y1="9" x2="12" y2="13"></line>
+                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+              </div>
+              <div class="kpi-content">
+                <div class="kpi-num" id="kpi-vulns">0</div>
+                <div class="kpi-label">Active Vulnerabilities</div>
+              </div>
+            </div>
+
+            <div class="kpi-mini-card">
+              <div class="kpi-icon-wrap icon-amber">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+              </div>
+              <div class="kpi-content">
+                <div class="kpi-num" id="kpi-exposures">0</div>
+                <div class="kpi-label">Sensitive Exposures</div>
+              </div>
+            </div>
+
+            <div class="kpi-mini-card">
+              <div class="kpi-icon-wrap icon-cyan">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+              </div>
+              <div class="kpi-content">
+                <div class="kpi-num" id="kpi-users">0</div>
+                <div class="kpi-label">Enumerated Users</div>
+              </div>
+            </div>
+
+            <div class="kpi-mini-card">
+              <div class="kpi-icon-wrap icon-blue">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+              </div>
+              <div class="kpi-content">
+                <div class="kpi-num" id="kpi-headers">0</div>
+                <div class="kpi-label">Missing Headers</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DEDUCTIONS CALLOUT -->
+        <div id="deductions-box" class="deductions-container hidden">
+          <div class="deductions-header">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <span>Security Findings & Posture Deductions:</span>
+          </div>
+          <ul id="deductions-list" class="deductions-list"></ul>
+        </div>
+
+        <!-- TAB NAVIGATION -->
+        <div class="tabs-nav-bar">
+          <button class="tab-btn active" data-tab="tab-vulns">
+            <span>⚠️ Vulnerabilities</span>
+            <span id="tab-count-vulns" class="tab-pill">0</span>
+          </button>
+          <button class="tab-btn" data-tab="tab-exposures">
+            <span>🔒 Exposures</span>
+            <span id="tab-count-exposures" class="tab-pill">0</span>
+          </button>
+          <button class="tab-btn" data-tab="tab-headers">
+            <span>🛡 Security Headers</span>
+          </button>
+          <button class="tab-btn" data-tab="tab-users">
+            <span>👤 Users & OSINT</span>
+            <span id="tab-count-users" class="tab-pill">0</span>
+          </button>
+          <button class="tab-btn" data-tab="tab-plugins">
+            <span>🔌 Plugins & Themes</span>
+            <span id="tab-count-plugins" class="tab-pill">0</span>
+          </button>
+          <button class="tab-btn" data-tab="tab-server">
+            <span>🖥 Server & Tech</span>
+          </button>
+          <button class="tab-btn" data-tab="tab-raw">
+            <span>📋 Raw JSON</span>
+          </button>
+        </div>
+
+        <!-- TAB PANELS -->
+        <div class="tab-content-area">
+          <!-- TAB 1: VULNERABILITIES -->
+          <div id="tab-vulns" class="tab-panel active">
+            <div class="panel-header">
+              <h3>Plugin CVE Intelligence</h3>
+              <div class="filter-group">
+                <button class="filter-pill active" data-vuln-filter="all">All</button>
+                <button class="filter-pill" data-vuln-filter="VULNERABLE">Vulnerable</button>
+                <button class="filter-pill" data-vuln-filter="PATCHED">Patched</button>
+              </div>
+            </div>
+            <div class="table-container">
+              <table class="cyber-table">
+                <thead>
+                  <tr>
+                    <th>Plugin</th>
+                    <th>CVE</th>
+                    <th>Severity</th>
+                    <th>Audit Status</th>
+                    <th>Description</th>
+                    <th>Fix Details</th>
+                  </tr>
+                </thead>
+                <tbody id="vulns-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- TAB 2: EXPOSURES -->
+          <div id="tab-exposures" class="tab-panel">
+            <div class="panel-header">
+              <h3>Sensitive Path & Configuration Exposure</h3>
+              <p class="panel-desc">Validates potential disclosure of database dumps, backups, configuration files, and debug logs.</p>
+            </div>
+            <div class="table-container">
+              <table class="cyber-table">
+                <thead>
+                  <tr>
+                    <th>Asset Description</th>
+                    <th>Probed Path</th>
+                    <th>HTTP Status</th>
+                    <th>Response Size</th>
+                  </tr>
+                </thead>
+                <tbody id="exposures-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- TAB 3: HEADERS -->
+          <div id="tab-headers" class="tab-panel">
+            <div class="panel-header">
+              <h3>HTTP Security Headers Audit</h3>
+              <p class="panel-desc">Defensive headers protect web applications against clickjacking, MIME-sniffing, and cross-site attacks.</p>
+            </div>
+            <div id="headers-grid" class="headers-grid"></div>
+          </div>
+
+          <!-- TAB 4: USERS & OSINT -->
+          <div id="tab-users" class="tab-panel">
+            <div class="panel-header">
+              <h3>Discovered Users & Author Logins</h3>
+              <p class="panel-desc">Accounts identified through REST APIs, author IDOR redirects, and sitemaps.</p>
+            </div>
+            <div class="table-container">
+              <table class="cyber-table">
+                <thead>
+                  <tr>
+                    <th>User ID</th>
+                    <th>Login Handle</th>
+                    <th>Display Name</th>
+                    <th>Discovery Vector</th>
+                    <th>Profile Link</th>
+                  </tr>
+                </thead>
+                <tbody id="users-tbody"></tbody>
+              </table>
+            </div>
+
+            <div class="osint-grid">
+              <div class="osint-card">
+                <h4>Harvested Contact Emails</h4>
+                <ul id="emails-list" class="simple-list"></ul>
+              </div>
+              <div class="osint-card">
+                <h4>Social & Messaging Channels</h4>
+                <ul id="social-list" class="simple-list"></ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 5: PLUGINS & THEMES -->
+          <div id="tab-plugins" class="tab-panel">
+            <div class="grid-2col">
+              <div>
+                <div class="panel-header">
+                  <h3>Installed Plugins</h3>
+                </div>
+                <div class="table-container">
+                  <table class="cyber-table">
+                    <thead>
+                      <tr>
+                        <th>Plugin Name</th>
+                        <th>Version</th>
+                        <th>Source</th>
+                      </tr>
+                    </thead>
+                    <tbody id="plugins-tbody"></tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div>
+                <div class="panel-header">
+                  <h3>Active & Detected Themes</h3>
+                </div>
+                <div class="table-container">
+                  <table class="cyber-table">
+                    <thead>
+                      <tr>
+                        <th>Theme Name</th>
+                        <th>Version</th>
+                        <th>Author</th>
+                      </tr>
+                    </thead>
+                    <tbody id="themes-tbody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 6: SERVER & TECH -->
+          <div id="tab-server" class="tab-panel">
+            <div class="panel-header">
+              <h3>Server & Infrastructure Fingerprint</h3>
+            </div>
+            <div class="card-grid">
+              <div class="info-card">
+                <span class="info-label">Web Server</span>
+                <span class="info-val" id="server-val">—</span>
+              </div>
+              <div class="info-card">
+                <span class="info-label">PHP Version</span>
+                <span class="info-val" id="php-val">—</span>
+              </div>
+              <div class="info-card">
+                <span class="info-label">WAF / CDN Protection</span>
+                <div class="badges-row" id="waf-badges">—</div>
+              </div>
+              <div class="info-card">
+                <span class="info-label">SSL Certificate Issuer</span>
+                <span class="info-val" id="ssl-issuer-val">—</span>
+              </div>
+              <div class="info-card">
+                <span class="info-label">SSL Expiration</span>
+                <span class="info-val" id="ssl-expiry-val">—</span>
+              </div>
+              <div class="info-card">
+                <span class="info-label">Detected Frameworks & Tech</span>
+                <div class="badges-row" id="tech-badges">—</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 7: RAW JSON -->
+          <div id="tab-raw" class="tab-panel">
+            <div class="panel-header">
+              <h3>Full Machine-Readable JSON Payload</h3>
+              <button id="btn-copy-json" class="btn-ghost">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                <span>Copy JSON</span>
+              </button>
+            </div>
+            <pre class="json-code-box"><code id="raw-json-output">// JSON output will appear here...</code></pre>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- SLIDE-OVER SCAN HISTORY DRAWER -->
+    <aside id="history-drawer" class="history-drawer hidden">
+      <div class="drawer-header">
+        <h3>Audit History</h3>
+        <button id="btn-close-drawer" class="btn-icon">&times;</button>
+      </div>
+      <div id="history-items" class="drawer-content">
+        <p class="empty-history">No previous scans found in this browser.</p>
+      </div>
+      <div class="drawer-footer">
+        <button id="btn-clear-history" class="btn-danger-ghost">Clear All History</button>
+      </div>
+    </aside>
+
+    <footer class="app-footer">
+      <div class="footer-content">
+        <span>VexoraWP Security Suite • Passive Reconnaissance & Posture Auditing</span>
+        <span class="footer-disclaimer">Authorized security evaluation only.</span>
+      </div>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

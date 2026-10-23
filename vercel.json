@@ -6,18 +6,8 @@
       "memory": 1024
     }
   },
-  "routes": [
-    {
-      "src": "/api/scan",
-      "dest": "api/scan.py"
-    },
-    {
-      "src": "/api/(.*)",
-      "dest": "api/index.py"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
-    }
+  "rewrites": [
+    { "source": "/api/scan", "destination": "/api/scan.py" },
+    { "source": "/api/(.*)", "destination": "/api/scan.py" }
   ]
 }
