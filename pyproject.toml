@@ -1,0 +1,9 @@
+[project]
+name = "vexorawp"
+version = "1.0.0"
+description = "VexoraWP — WordPress Reconnaissance & Security Audit Suite"
+readme = "README.md"
+requires-python = ">=3.9"
+
+[tool.vercel]
+entrypoint = "api.scan:handler"

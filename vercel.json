@@ -8,8 +8,12 @@
   },
   "routes": [
     {
+      "src": "/api/scan",
+      "dest": "api/scan.py"
+    },
+    {
       "src": "/api/(.*)",
-      "dest": "/api/$1"
+      "dest": "api/index.py"
     },
     {
       "src": "/(.*)",
