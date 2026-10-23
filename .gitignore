@@ -1,0 +1,29 @@
+# Virtual Environment
+.venv/
+env/
+venv/
+ENV/
+
+# Python Cache & Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Output Reports & Logs
+*.log
+report.json
+report.html
+test_report.html
+
+# Environment Variables & Secrets (if ever added)
+.env
+.env.local
+.env.*.local
+
+# Vercel Deployment Artifacts
+.vercel/
+
+# OS Specific
+.DS_Store
+Thumbs.db
